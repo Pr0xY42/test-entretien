@@ -18,6 +18,8 @@ namespace TestEntretien
             {
                 {"a",10 },{"c",22},{"b",7896}
             };
+
+            var c = a.Select(x => new { Key = x.Key, Value = x.Value + b[x.Key] }).ToDictionary(x => x.Key, x => x.Value);
         }
 
         /// <summary>
@@ -31,6 +33,12 @@ namespace TestEntretien
                 new List<int>() { 45, 2, 1, 4, 2, 2, 100 },
                 new List<int>() { 45, 2, 1, 4, 2, 2 }
             };
+
+            var summedList = datas
+                .Select(x => x.Select((element, index) => new {Index = index, Value = element}))
+                .SelectMany(x => x)
+                .GroupBy(x => x.Index).ToDictionary(x => x.Key, x => x.Sum(v => v.Value))
+                .Values.ToList();
         }
 
         /// <summary>

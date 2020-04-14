@@ -16,9 +16,45 @@ namespace TestEntretien
         public static void GroupAnagram()
         {
             Console.WriteLine("GroupAnagram start");
-            string[] input = { "reza","eat", "tea", "tan", "ate", "nat", "bat", "bta", "azer" };
+            List<string> input = new List<string> { "reza","eat", "tea", "tan", "ate", "nat", "bat", "bta", "azer" };
+            var anagrams = new Dictionary<string, List<string>>();
 
-           
+            var i = 0;
+
+            while (input.Count != 0)
+            {
+                var possibleAnagrams = input.Where(x => x.Length == input[i].Length && x != input[i]).ToList();
+                foreach (var possibleAnagram in possibleAnagrams)
+                {
+                    if (possibleAnagram.All(x => input[i].Contains(x)))
+                    {
+                        if (anagrams.ContainsKey(input[i]))
+                            anagrams[input[i]].Add(possibleAnagram);
+                        else
+                        {
+                            anagrams.Add(input[i], new List<string> { possibleAnagram });
+                        }
+
+                        input.Remove(possibleAnagram);
+                    }
+                }
+
+                if (input.Count <= i)
+                    break;
+                
+                input.Remove(input[i]);
+
+                i++;
+            }
+
+            foreach (var anagram in anagrams)
+            {
+                Console.WriteLine($"{anagram.Key} : ");
+                foreach (var anagramValue in anagram.Value)
+                {
+                    Console.WriteLine($"    {anagramValue}");
+                }
+            }
         }
 
         public static void SortInt()
